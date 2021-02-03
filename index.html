@@ -13,19 +13,16 @@
         <div class="header__logo">LOGO</div>
       </header>
       <div class="main-container">
-        <section class="search">
-          <div class="search__box">
-            <input
-              name="input"
-              type="text"
-              class="search__box__input"
-              placeholder="Enter location..."
-            />
-            <input type="submit" class="search__box__submit" value="Search" />
-          </div>
-        </section>
+        <div class="search-container">
+          <input
+            type="text"
+            id="searchBar"
+            placeholder="Enter location..."
+          />
+          <button type="submit" id="searchBtn" class="search__submit">Submit</button>
+        </div>
 
-        <section class="result-container">
+        <div class="result-container">
           <h1 class="result-container__location">City</h1>
 
           <div class="result">
@@ -65,7 +62,7 @@
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
     <script src="./js/main.js"></script>

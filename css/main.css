@@ -48,7 +48,7 @@ body {
   font-size: 40px;
 }
 
-.search {
+.search-container {
   padding: 15px;
   margin-bottom: 10px;
   display: -webkit-box;
@@ -64,6 +64,16 @@ body {
   background: #fdf8f8;
   -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
           box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.search-container__input {
+  width: 200px;
+  height: 30px;
+}
+
+.search-container__submit {
+  width: 70px;
+  height: 30px;
 }
 
 .result-container {
