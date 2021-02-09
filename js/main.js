@@ -70,14 +70,10 @@ async function getAttraction(){
 
 function setAttraction(json){
     let attraction = document.querySelector('#attraction');
-
-    //Detta ska bytas bort till: skapa X antal divs beroende på X antal attractions i venues array.
-    let newAttraction = document.createElement('div');
-    attraction.append(newAttraction);
-    newAttraction.className = 'result__attractions__item';
-    let attractionTitle = document.createElement('h1');
-    newAttraction.append(attractionTitle);
-    attractionTitle.innerText = json.response.venues[0].name;
+    let slice = json.response.venues.slice([0], [10]);
+    slice.forEach(item => {
+        console.log(item.name);
+    });
     
 }
 
