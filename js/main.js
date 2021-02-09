@@ -5,6 +5,7 @@ const searchBtn = document.getElementById('searchBtn');
 function searchSort() {
     let searchBar = document.getElementById('searchBar');
     let searchString = searchBar.value;
+    
     console.log(searchString);
 
     let c1 = document.getElementById('checkWeather');
@@ -26,38 +27,61 @@ function searchSort() {
 
 }
 
-async function getWeather (){
-    let weatherKey = "d7bc03d1ac4e59c3ce650ed881c4a63a";
+async function getWeather(){
+    const weatherKey = "d7bc03d1ac4e59c3ce650ed881c4a63a";
     let cityName = searchBar.value;
 
-    let response = await fetch (`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${weatherKey}`)
+    let response = await fetch (`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${weatherKey}`)
     let json = await response.json()
     console.log(json)
     setWeather(json)
-
 }
 
-function setWeather(){
-    let weatherBox = document.querySelector('#weather');
-    weatherBox.innerHTML = '';
-    let newWeather = document.createElement('div');
-    newWeather.className =  'result__weather__item';
-    weatherBox.append(newWeather);
-    let weatherTitle = document.createElement('h1');
-    weatherTitle.innerText = 'Weather';
-    newWeather.append(weatherTitle);
-    
-
+function setWeather(json){
+    let temp = document.getElementById('temp');
+    let rainEtc = document.getElementById('rainEtc');
+    let wind = document.getElementById('wind');
+    temp.innerHTML = json.main.temp;
+    rainEtc.innerHTML = json.weather[0].description;
+    wind.innerHTML = json.wind.speed;
 }
 
 // foursquare
-const clientID = "MI3WSBZXAFTJCJLIBS5LRFDSUTA5P0OV0VM3HOV5ZPV32QBA";
-const clientSecret = "0ZXVFT3FTGGSEOYDTKHYCLT4GE25GUQJTRG0BS23XILEAQKE";
 
 
+async function getAttraction(){
+    const clientID = "MI3WSBZXAFTJCJLIBS5LRFDSUTA5P0OV0VM3HOV5ZPV32QBA";
+    const clientSecret = "0ZXVFT3FTGGSEOYDTKHYCLT4GE25GUQJTRG0BS23XILEAQKE";
 
+    let currentDate = new Date();
+    let cDay = "0" + (currentDate.getDate());
+    let cMonth = "0" + (currentDate.getMonth() + 1);
+    let cYear = currentDate.getFullYear();
+    let date = `${cYear}${cMonth}${cDay}`;
+    
+    let city = searchBar.value;
+
+    let response = await fetch (`https://api.foursquare.com/v2/venues/search?near=${city}&client_id=${clientID}&client_secret=${clientSecret}&v=${date}`);
+    let json = await response.json();
+    console.log(json)
+    console.log(json.response.venues[0].name);
+    setAttraction(json)
+}
+
+function setAttraction(json){
+    let attraction = document.querySelector('#attraction');
+
+    //Detta ska bytas bort till: skapa X antal divs beroende på X antal attractions i venues array.
+    let newAttraction = document.createElement('div');
+    attraction.append(newAttraction);
+    newAttraction.className = 'result__attractions__item';
+    let attractionTitle = document.createElement('h1');
+    newAttraction.append(attractionTitle);
+    attractionTitle.innerText = json.response.venues[0].name;
+    
+}
 
 
 searchBtn.addEventListener('click', searchSort);
-//searchBtn.addEventListener('click', weatherSearch);
 searchBtn.addEventListener('click', getWeather);
+searchBtn.addEventListener('click', getAttraction);

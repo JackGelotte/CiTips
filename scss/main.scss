@@ -79,7 +79,7 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
 
-    &__item {
+    &__container {
       padding: 10px;
       display: flex;
       background: $card-color;
@@ -90,6 +90,13 @@ body {
       margin-top: 40px;
       box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1),
         0 5px 10px 0 rgba(0, 0, 0, 0.15);
+
+        &__result {
+          display: inline-flex;
+          flex-direction: row;
+          width: 90%;
+          justify-content: space-around;
+        }
     }
   }
 
