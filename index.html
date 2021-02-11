@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/main.css" />
-    <title>CiTips | Travel Tips</title>
+    <title>CiTips | City Tips</title>
   </head>
 
   <body>
     <div class="page-container">
       <header class="header">
-        <div class="header__logo">LOGO</div>
+        <div class="header__logo">CiTips</div>
       </header>
       <div class="main-container">
         <div class="search-container">
@@ -20,36 +20,72 @@
             class="search-container__input"
             placeholder="Enter location..."
           />
-          <button type="submit" id="searchBtn" class="search-container__submit">Submit</button>
+          <button type="submit" id="searchBtn" class="search-container__submit">
+            Submit
+          </button>
 
-          <input type="checkbox" id="checkWeather" class="search-container__check">
+          <input
+            type="checkbox"
+            id="checkWeather"
+            class="search-container__check"
+          />
           <label for="checkWeather">Weather</label>
-          <input type="checkbox" id="checkAttraction" class="search-container__check">
+          <input
+            type="checkbox"
+            id="checkAttraction"
+            class="search-container__check"
+          />
           <label for="checkAttraction">Attraction</label>
-          <input type="checkbox" id="checkAlpha" class="search-container__check">
+          <input
+            type="checkbox"
+            id="checkAlpha"
+            class="search-container__check"
+          />
           <label for="checkAlpha">Order Alphabetically</label>
         </div>
 
         <div class="result-container">
-          <h1 class="result-container__location">City</h1>
+          <h1 class="cityTag" id="cityTag">City</h1>
 
           <div class="result">
-
             <div id="weather" class="result__weather">
+              <h2 id="weatherTitle"></h2>
               <div class="result__weather__container">
-                <h1>Weather</h1>
-                <div id="weatherResult" class="result__weather__container__result">
-                  <div id="temp"></div>
-                  <div id="rainEtc"></div>
-                  <div id="wind"></div>
+                <div
+                  id="weatherResult"
+                  class="result__weather__container__items"
+                >
+                  <div id="temp">
+                    <img
+                      src="./images/celsius.png"
+                      alt="temperature icon"
+                      id="tIcon"
+                    />
+                    <p id="tempDesc"></p>
+                  </div>
+                  <div id="rainEtc">
+                    <img src="" alt="weather icon" id="wIcon" />
+                    <p id="weatherDesc"></p>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <!-- Placeholder -->
             <div id="attraction" class="result__attractions">
-              <div class="result__attractions__item">
+              <h2>Attractions</h2>
+              <div
+                id="attractionContainer"
+                class="result__attractions__container"
+              >
+                <!-- <div class="result__attractions__container__item">
                 <h1>Aights</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni fugit qui sequi tempora maxime quae perferendis temporibus nulla numquam mollitia.</p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Magni fugit qui sequi tempora maxime quae perferendis
+                  temporibus nulla numquam mollitia.
+                </p>
+              </div> -->
               </div>
             </div>
           </div>

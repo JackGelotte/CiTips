@@ -75,48 +75,84 @@ body {
 
   &__weather {
     margin: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
     &__container {
-      padding: 10px;
+      padding: 30px;
       display: flex;
-      background: $card-color;
+      background: $weatherCard-color;
+      justify-content: center;
       align-items: center;
       flex-direction: column;
       width: 350px;
-      height: 250px;
-      margin-top: 40px;
+      height: 200px;
       box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1),
         0 5px 10px 0 rgba(0, 0, 0, 0.15);
 
-        &__result {
-          display: inline-flex;
-          flex-direction: row;
-          width: 90%;
-          justify-content: space-around;
+      &__items {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        text-align: center;
+
+        #temp {
+          width: 50%;
+          #tIcon {
+            min-width: 40px;
+            max-width: 50px;
+          }
         }
+        #rainEtc {
+          display: flex;
+          width: 50%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          #wIcon {
+            min-width: 40px;
+            max-width: 50px;
+          }
+        }
+      }
     }
   }
 
   &__attractions {
     margin: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-    &__item {
-      padding: 10px;
+    &__container {
       display: flex;
-      background: $card-color;
-      align-items: center;
-      flex-direction: column;
-      width: 350px;
-      height: 250px;
-      margin-top: 40px;
-      box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1),
-        0 5px 10px 0 rgba(0, 0, 0, 0.15);
+      flex-flow: row wrap;
+      justify-content: center;
+      gap: 25px;
+
+      &__item {
+        padding: 10px;
+        display: flex;
+        background: $attractionCard-color;
+        align-items: center;
+        flex-direction: column;
+        width: 350px;
+        height: 250px;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1),
+          0 5px 10px 0 rgba(0, 0, 0, 0.15);
+
+        h1 {
+          font-size: 18px;
+          text-align: center;
+        }
+      }
     }
   }
 }
