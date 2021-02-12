@@ -4,9 +4,6 @@ const searchBtn = document.getElementById('searchBtn');
 // search function
 function searchSort() {
     let searchBar = document.getElementById('searchBar');
-    let searchString = searchBar.value;
-
-    console.log(searchString);
 
     let c1 = document.getElementById('checkWeather');
     let c2 = document.getElementById('checkAttraction');
@@ -14,7 +11,9 @@ function searchSort() {
     let weather = document.querySelector('#weather');
     let attraction = document.querySelector('#attraction');
 
-
+    if (searchBar.value === '') {
+        alert('Gotta enter a city, mate')
+    }
     if (c1.checked === true) {
         weather.style.display = 'flex';
         getWeather();
@@ -27,6 +26,11 @@ function searchSort() {
     } else {
         attraction.style.display = 'none';
     }
+    if (c1.checked === false && c2.checked === false) {
+        c1.checked = true;
+        c2.checked = true;
+        searchSort();
+    }
 }
 
 searchBtn.addEventListener('click', searchSort);
@@ -36,10 +40,19 @@ async function getWeather() {
     const weatherKey = "d7bc03d1ac4e59c3ce650ed881c4a63a";
     let cityName = searchBar.value;
 
-    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${weatherKey}`);
-    let json = await response.json();
-    setWeather(json);
-    setCity(json);
+    // try/catch if API can't find city
+    try {
+        let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${weatherKey}`)
+        if (response.ok) {
+            let json = await response.json();
+            setWeather(json);
+            setCity(json);
+        } else {
+            alert("OpenWeather couldn't find that city")
+        }
+    } catch (error) {
+        alert("Not working properly")
+    }
 }
 
 // set city name (gets name from weather API)
@@ -77,10 +90,22 @@ async function getAttraction() {
 
     let city = searchBar.value;
 
-    let response = await fetch(`https://api.foursquare.com/v2/venues/search?near=${city}&client_id=${clientID}&client_secret=${clientSecret}&v=${date}`);
-    let json = await response.json();
-    setAttraction(json)
-    setCity2(json)
+    // try/catch if API can't find city
+    try {
+        let response = await fetch(`https://api.foursquare.com/v2/venues/search?near=${city}&client_id=${clientID}&client_secret=${clientSecret}&v=${date}`);
+        if (response.ok) {
+            let json = await response.json();
+            setAttraction(json)
+            setCity2(json)
+        } else {
+            alert("Foursquare couldn't find that city")
+        }
+    } catch (error) {
+        console.log("Not working properly")
+    }
+
+
+
 }
 
 // set city name (gets name from venue API)
@@ -94,7 +119,6 @@ function setAttraction(json) {
     slice.forEach(item => {
         buildAttraction(item);
     });
-
 }
 
 // builds attractionbox
@@ -103,9 +127,17 @@ function buildAttraction(venue) {
     newAttraction.className = 'result__attractions__container__item';
     let newTitle = document.createElement('h1');
     newTitle.innerHTML = venue.name;
-    let newInfo = document.createElement('div');
     let container = document.querySelector('#attractionContainer');
     container.append(newAttraction);
-    newAttraction.append(newTitle, newInfo);
-}
 
+    let newIconDiv = document.createElement('div');
+    newIconDiv.className = 'result__attractions__container__item__iconDiv';
+    let newIcon = document.createElement('img');
+    newAttraction.append(newTitle, newIconDiv);
+    newIconDiv.append(newIcon);
+
+    let iconPrefix = venue.categories[0].icon.prefix + "88";
+    let iconSuffix = venue.categories[0].icon.suffix;
+
+    newIcon.src = `${iconPrefix}${iconSuffix}`;
+}
