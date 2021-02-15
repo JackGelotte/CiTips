@@ -1,7 +1,7 @@
 
 const searchBtn = document.getElementById('searchBtn');
 
-// search function
+// Sök funktion - kör API request beroende på vad som är "checked"
 function searchSort() {
     let searchBar = document.getElementById('searchBar');
 
@@ -35,13 +35,14 @@ function searchSort() {
 
 searchBtn.addEventListener('click', searchSort);
 
-// openweather API call
+// Funktion för OpenWeather API
 async function getWeather() {
     const weatherKey = "d7bc03d1ac4e59c3ce650ed881c4a63a";
     let cityName = searchBar.value;
 
     // try/catch if API can't find city
     try {
+        // 
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${weatherKey}`)
         if (response.ok) {
             let json = await response.json();
@@ -49,9 +50,11 @@ async function getWeather() {
             setCity(json);
         } else {
             alert("OpenWeather couldn't find that city")
+            let weather = document.querySelector('#weather');
+            weather.style.display = 'none';
         }
     } catch (error) {
-        alert("Not working properly")
+        alert("Weather API not working properly")
     }
 }
 
@@ -101,7 +104,7 @@ async function getAttraction() {
             alert("Foursquare couldn't find that city")
         }
     } catch (error) {
-        console.log("Not working properly")
+        console.log("Attraction API not working properly")
     }
 
 
@@ -115,9 +118,33 @@ function setCity2(json) {
 }
 // set attractionboxes, (by calling buildAttraction)
 function setAttraction(json) {
-    let slice = json.response.venues.slice([0], [10]);
+    clear();
+    let slice = json.response.venues.slice([0], [50]);
+
+    let c3 = document.querySelector('#checkAlpha');
+    if (c3.checked) {
+        slice.sort((a, b) => {
+            if (a.name > b.name) {
+                return 1;
+            }
+            else if (a.name < b.name) {
+                return -1;
+            } else {
+                if (a.categories[0].name > b.categories[0].name) {
+                    return 1;
+                }
+                if (a.categories[0].name < b.categories[0].name) {
+                    return -1;
+                }
+
+            }
+            return 0;
+        })
+    }
+
     slice.forEach(item => {
         buildAttraction(item);
+        console.log(item);
     });
 }
 
@@ -140,4 +167,8 @@ function buildAttraction(venue) {
     let iconSuffix = venue.categories[0].icon.suffix;
 
     newIcon.src = `${iconPrefix}${iconSuffix}`;
+}
+
+function clear() {
+    Array.from(document.querySelector('#attractionContainer').childNodes).forEach(e => e.remove());
 }
