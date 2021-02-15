@@ -1,7 +1,7 @@
 
 const searchBtn = document.getElementById('searchBtn');
 
-// Sök funktion - kör API request beroende på vad som är "checked"
+// sök funktion - kör API request och visar resultat beroende på vad som är "checked"
 function searchSort() {
     let searchBar = document.getElementById('searchBar');
 
@@ -35,20 +35,23 @@ function searchSort() {
 
 searchBtn.addEventListener('click', searchSort);
 
-// Funktion för OpenWeather API
+// funktion för API call till OpenWeather
 async function getWeather() {
     const weatherKey = "d7bc03d1ac4e59c3ce650ed881c4a63a";
+    // sökordet
     let cityName = searchBar.value;
 
-    // try/catch if API can't find city
+    // try/catch för API call
     try {
-        // 
+        // här kör vi en fetch, med min OpenWeather URL
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${weatherKey}`)
         if (response.ok) {
+            // om den är ok så visar vi vädret med setWeather
             let json = await response.json();
             setWeather(json);
             setCity(json);
         } else {
+            // error om den inte är ok
             alert("OpenWeather couldn't find that city")
             let weather = document.querySelector('#weather');
             weather.style.display = 'none';
@@ -58,13 +61,13 @@ async function getWeather() {
     }
 }
 
-// set city name (gets name from weather API)
+// h1 högst upp i resultat container,  från namnet på platsen som OpenWeather gett oss
 function setCity(json) {
     let cityTag = document.getElementById('cityTag');
     cityTag.innerHTML = json.name;
 }
 
-// set weatherbox
+// funktion för att visa det temperatur och väder, från det vi får från OpenWeather
 function setWeather(json) {
     let tempDesc = document.getElementById('tempDesc');
     let weatherDesc = document.getElementById('weatherDesc');
@@ -80,21 +83,23 @@ function setWeather(json) {
 }
 
 
-// foursquare API call
+// funktion för API call till FourSquare
 async function getAttraction() {
     const clientID = "MI3WSBZXAFTJCJLIBS5LRFDSUTA5P0OV0VM3HOV5ZPV32QBA";
     const clientSecret = "0ZXVFT3FTGGSEOYDTKHYCLT4GE25GUQJTRG0BS23XILEAQKE";
 
+    // detta fixar dagens datum för URL
     let currentDate = new Date();
     let cDay = "0" + (currentDate.getDate());
     let cMonth = "0" + (currentDate.getMonth() + 1);
     let cYear = currentDate.getFullYear();
     let date = `${cYear}${cMonth}${cDay}`;
-
+    // sökordet
     let city = searchBar.value;
 
-    // try/catch if API can't find city
+    // try/catch för API call
     try {
+        // här kör vi en fetch, med min FourSquare URL
         let response = await fetch(`https://api.foursquare.com/v2/venues/search?near=${city}&client_id=${clientID}&client_secret=${clientSecret}&v=${date}`);
         if (response.ok) {
             let json = await response.json();
@@ -111,17 +116,20 @@ async function getAttraction() {
 
 }
 
-// set city name (gets name from venue API)
+// h1 högst upp i resultat container,  från namnet på platsen som FourSquare gett oss
 function setCity2(json) {
     let cityTag = document.getElementById('cityTag');
     cityTag.innerHTML = json.response.geocode.feature.name;
 }
-// set attractionboxes, (by calling buildAttraction)
+// funtion för att visa venues, i den stad vi får av FourSquare
 function setAttraction(json) {
+    // tömmer containern innan den ska skapa nytt
     clear();
-    let slice = json.response.venues.slice([0], [50]);
+    // tar en slice av den respons vi fått
+    let slice = json.response.venues.slice([0], [10]);
 
     let c3 = document.querySelector('#checkAlpha');
+    // sorterar om det är icheckat att sortera i alfabetisk ordning. Kollar först namn på stället, och om det skulle finnas fler så kör den efter kategori.
     if (c3.checked) {
         slice.sort((a, b) => {
             if (a.name > b.name) {
@@ -136,19 +144,17 @@ function setAttraction(json) {
                 if (a.categories[0].name < b.categories[0].name) {
                     return -1;
                 }
-
             }
             return 0;
         })
     }
-
+    // kallar på buildAttraction för varje item i slice
     slice.forEach(item => {
         buildAttraction(item);
-        console.log(item);
     });
 }
 
-// builds attractionbox
+// funktion som bygger varje venue i vår slice
 function buildAttraction(venue) {
     let newAttraction = document.createElement('div');
     newAttraction.className = 'result__attractions__container__item';
@@ -169,6 +175,7 @@ function buildAttraction(venue) {
     newIcon.src = `${iconPrefix}${iconSuffix}`;
 }
 
+// funktionen som rensar venue resultat innan det fylls på nytt
 function clear() {
     Array.from(document.querySelector('#attractionContainer').childNodes).forEach(e => e.remove());
 }
